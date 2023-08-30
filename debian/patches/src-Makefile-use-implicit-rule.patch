@@ -1,0 +1,18 @@
+Description: use implicit rule for embed
+ This fixes the blhc Salsa job
+Author: Andrea Pappacoda <andrea@pappacoda.it>
+Forwarded: no
+Last-Update: 2022-11-06
+
+--- microprofile-4.0+dfsg.orig/src/Makefile
++++ microprofile-4.0+dfsg/src/Makefile
+@@ -6,8 +6,7 @@ TARGET=../microprofile_html.h
+ 
+ all: $(TARGET)
+ 
+-embed: embed.c
+-	$(CC) -g embed.c -o embed
++embed: embed.o
+ 
+ $(TARGET): embed microprofile.html microprofilelive.html
+ 	rm -f $(TARGET)

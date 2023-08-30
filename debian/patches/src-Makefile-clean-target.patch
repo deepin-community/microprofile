@@ -1,0 +1,14 @@
+Description: Add clean target in src/Makefile
+Author: Andrea Pappacoda <andrea@pappacoda.it>
+Forwarded: no
+Last-Update: 2022-11-03
+
+--- microprofile-4.0+dfsg.orig/src/Makefile
++++ microprofile-4.0+dfsg/src/Makefile
+@@ -14,4 +14,5 @@ $(TARGET): embed microprofile.html micro
+ 	./embed $(TARGET) microprofile.html ____embed____ g_MicroProfileHtml MICROPROFILE_EMBED_HTML
+ 	./embed $(TARGET) microprofilelive.html ____embed____ g_MicroProfileHtmlLive MICROPROFILE_EMBED_HTML
+ 
+-
++clean:
++	rm -f embed $(TARGET)

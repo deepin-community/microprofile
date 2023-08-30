@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -eu
+
+cd "$AUTOPKGTEST_TMP"
+
+c++ -Wall -Wextra -Werror -Wno-unused-parameter "$OLDPWD/demo/noframes/noframes.cpp" $(pkg-config --cflags --libs microprofile)

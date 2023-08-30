@@ -1,0 +1,6 @@
+meson-manual-version.patch
+visibility.patch
+re-add-microprofile.html.patch
+src-Makefile-clean-target.patch
+src-Makefile-use-implicit-rule.patch
+readme-markdown-fixes.patch

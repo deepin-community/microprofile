@@ -1,0 +1,3 @@
+usr/include
+usr/lib/*/libmicroprofile.so
+usr/lib/*/pkgconfig

@@ -1,0 +1,25 @@
+Description: use GCC visibility
+ This allows to only expose public symbols
+Author: Andrea Pappacoda <andrea@pappacoda.it>
+Forwarded: no
+Last-Update: 2022-12-28
+
+--- microprofile-3.1+ds.orig/meson.build
++++ microprofile-3.1+ds/meson.build
+@@ -12,7 +12,7 @@ project(
+ 		'cpp_std=c++11'
+ 	],
+ 	license: 'MIT',
+-	meson_version: '>=0.46.0',
++	meson_version: '>=0.48.0',
+ 	version: '4.0'
+ )
+ 
+@@ -48,6 +48,7 @@ libmicroprofile = library(
+ 	'microprofile.cpp',
+ 	cpp_args: extra_args,
+ 	dependencies: deps,
++	gnu_symbol_visibility: 'hidden',
+ 	include_directories: include_dir,
+ 	install: true,
+ 	version: meson.project_version()
