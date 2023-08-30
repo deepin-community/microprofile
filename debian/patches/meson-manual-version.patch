@@ -1,0 +1,28 @@
+Description: Set manual version in meson.build
+ Needed to get automatic shared object versioning
+Author: Andrea Pappacoda <andrea@pappacoda.it>
+Forwarded: not-needed
+Last-Update: 2022-10-29
+
+--- microprofile-3.1.orig/meson.build
++++ microprofile-3.1/meson.build
+@@ -12,7 +12,8 @@ project(
+ 		'cpp_std=c++11'
+ 	],
+ 	license: 'MIT',
+-	meson_version: '>=0.46.0'
++	meson_version: '>=0.46.0',
++	version: '4.0'
+ )
+ 
+ # Dependencies
+@@ -48,7 +49,8 @@ libmicroprofile = library(
+ 	cpp_args: extra_args,
+ 	dependencies: deps,
+ 	include_directories: include_dir,
+-	install: true
++	install: true,
++	version: meson.project_version()
+ )
+ 
+ # Headers and pkg-config installation

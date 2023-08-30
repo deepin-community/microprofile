@@ -1,0 +1,224 @@
+Description: Small Markdown fixes to the README
+Author: Andrea Pappacoda <andrea@pappacoda.it>
+Forwarded: no
+Last-Update: 2022-12-28
+
+--- microprofile-4.0+dfsg.orig/README.md
++++ microprofile-4.0+dfsg/README.md
+@@ -1,18 +1,14 @@
+-![Build Status](https://github.com/jonasmr/microprofile/actions/workflows/mp-build.yml/badge.svg)
+-
+-
+ # microprofile
+ 
+ Microprofile is a embeddable profiler in a few files, written in C++
+ 
+-
+ Microprofile is hosted on
+ 
+-* github: https://github.com/jonasmr/microprofile.git
++* GitHub: <https://github.com/jonasmr/microprofile.git>
+ 
+-# Integration
++## Integration
+ 
+-```
++```cpp
+ #include "microprofile.h"
+ {
+ 	MICROPROFILE_SCOPEI("group","timername", MP_YELLOW);
+@@ -22,7 +18,7 @@ Microprofile is hosted on
+ 
+ And once each frame you should call
+ 
+-```
++```cpp
+ MicroProfileFlip(nullptr);
+ ```
+ 
+@@ -32,7 +28,8 @@ The nullpointer is the void* device cont
+ 
+ MicroProfile can be used without calling MicroProfileFlip, in which case you should call MicroProfileDumpFileImmediately, to save the profile data as .html/.csv file on disk.
+ 
+-# Gpu Timing
++## Gpu Timing
++
+ Gpu timers work like normal timers, except they are all put in a shared group, "GPU". To use them insert `MICROPROFILE_SCOPEGPUI()`.
+ Gpu timers also supports multithreaded renderers - Please refer to demo_nouid3d12 for an example of how to use this.
+ Gpu timers are available for the following apis:
+@@ -42,16 +39,17 @@ Gpu timers are available for the followi
+ * D3D12
+ * Vulkan
+ 
+-# Counters
++## Counters
+ 
+ MicroProfile has support for tracking various counters, that will then be shown in the live & capture views. 
+ 
+-```
++```cpp
+ 	MICROPROFILE_COUNTER_ADD("memory/main", 1000);
+ 	MICROPROFILE_COUNTER_SET("fisk/geder/", 42);
+ ```
+ 
+-# Timeline
++## Timeline
++
+ The Timeline view in a capture is intended to mark longer, unique timers. It can be used to show stuff like a level loading, with the levels name included.
+ 
+ * They are intended to mark state that last a long timer - Longer than a single frame
+@@ -61,26 +59,24 @@ The Timeline view in a capture is intend
+ 
+ There are two ways to use it. The first one uses unformatted static string literals:
+ 
+-```
++```cpp
+ 	MICROPROFILE_TIMELINE_ENTER_STATIC(MP_DARKGOLDENROD, "one");
+ 	MICROPROFILE_TIMELINE_LEAVE_STATIC("one");
+ 
+ ```
+ 
+ The second option allows for arbitrary strings, but requires a token is stored, for the profiler to identify when leaving the marker:
+-```
++
++```cpp
+ 	MICROPROFILE_TIMELINE_TOKEN(token);
+ 	MICROPROFILE_TIMELINE_ENTERF(token, MP_YELLOW, "custom %d %6.2f", 10, 42.0f);
+ 	MICROPROFILE_TIMELINE_LEAVE(token);
+ ```
+ 
+-
+-
+-
+-# Live View
++## Live View
+ 
+ To start microprofile in live mode, simply point chrome to host:1338/
+-The live view can be used to enable different microprofile groups, using the Control menu. If no groups are enabled, no code is timed. 
++The live view can be used to enable different microprofile groups, using the Control menu. If no groups are enabled, no code is timed.
+ Press the capture button to generate a capture. By default the last 30 frames are capture.
+ The capture itself is a fully contained webpage, that can be saved and shared for further reference.
+ 
+@@ -93,21 +89,25 @@ There are a few ways the webserver can b
+ Presets can be loaded and saved directly from the webbrowser. They are saved by the application in a file named mppresets.cfg.
+ builtin presets are presets, that are loaded from mppresets.builtin.cfg. They work like presets, except they only be loaded. This is intended to be used to do predefined, non-overwriteable configurations.
+ 
+-![Alt text](images/live.png?raw=true "Live screenshot")
++![Live screenshot](images/live.png?raw=true "Live screenshot")
++
++## Capture view
+ 
+-# Capture view
+ Capturing in live view provides a complete view of what is recorded in the ring buffers over a set amount of frames. Please be aware if you capture to far behind, the markers you're are looking for might be overwritten, in which case there will be no markers. As the buffers are reused per thread, this is something that will happen on a per thread basis.
+ 
+-![Alt text](images/detailed.png?raw=true "Capture screenshot")
++![Capture screenshot](images/detailed.png?raw=true "Capture screenshot")
++
++## Comparing captures
+ 
+-# Comparing captures
+ Microprofile supports comparing two different captures. Save the first capture to disk, open the second capture and click compare and browse to the first file.
+ Please be aware that:
++
+ * Only the detailed view is supported
+ * Captures saved from earlier versions will not work with this feature
+ * When context switch trace is enabled, comparing will only compare registered threads.
+ 
+-# Dynamic Instrumentation
++## Dynamic Instrumentation
++
+ On Intel x86-64 Microprofile supports dynamically injecting markers into running code. This is supported on windows, osx and linux(tested on ubuntu)
+ To use this feature
+ 
+@@ -117,6 +117,7 @@ To use this feature
+ * hold down `alt` to pan the secondary capture without moving the first capture
+ 
+ Please be aware that this is still a bit experimental, and be aware of these limitations:
++
+ * The profiler does not attempt to stop all running threads while instrumenting.
+ 	* This potentially can cause issues, as there is a critical moment when replacing the first 14 bytes of the function being patched. If any thread is executing the code begin replaced, the program behaviour will not be well defined
+ 	* For development this is usually fine
+@@ -126,15 +127,14 @@ Please be aware that this is still a bit
+ * On linux you need to link your program with -rdynamic, in order to make the it possible to find the functions using `dladdr`
+ 	* if you know of any way to query this without linking with -rdynamic I'd love to hear about it.
+ 
+-
+ If compiled and linked with Dynamic Instrumentation, two new menus appear, "modules" and "functions".
+ 
+ The "modules" menu allows you to load debug information from your loaded modules. Select one or more modules to load from. Once its loaded the bar behind the module name is filled, and the debug information is ready.
+ 
+ ![Modules screenshot](images/modules.png?raw=true "Modules screenshot")
+ 
+-
+ Once the debug symbols are loaded - Indicated by the number in the top of the functions menu - You can start typing to search for functions to instrument.
++
+ * Click on a function to attempt to instrument it
+ * If instrumentation fails, you´ll be asked to report the code sequence. Please consider doing this.
+ * Click on '>>' next to a function, to attempt to instrument all the functions called by that function
+@@ -142,8 +142,8 @@ Once the debug symbols are loaded - Indi
+ 
+ ![Functions screenshot](images/functions.png?raw=true "Functions screenshot")
+ 
++## Example code
+ 
+-# Example code
+ * noframes: Using microprofile to profile an application without any concept of frames. dumps a capture at the end. No live view.
+ * simple: frame based implementation. with live view. No gpu timing
+ * d3d11: frame based implementation, with live view and D3D11 gpu timers
+@@ -154,13 +154,13 @@ Once the debug symbols are loaded - Indi
+ * dynamic_instrument: Demo for dynamic instrumentation. 
+ * workbench: Workbench for development. Using all features of microprofile.
+ 
++## Dependencies
+ 
+-# Dependencies
+ * Microprofile supports generating compressed captures using miniz(http:/code.google.com/miniz). 
+ * Distorm is used to disassemble x86-64 when using dynamic instrumentation(https://github.com/gdabah/distorm)
+ 
++## Resource usage
+ 
+-# Resource usage
+ MicroProfile uses a few large allocations.
+ 
+ * One global instance of struct MicroProfile
+@@ -180,10 +180,12 @@ To change how microprofile allocates mem
+ * MICROPROFILE_REALLOC
+ * MICROPROFILE_FREE
+ 
+-# microprofile.config.h
++## microprofile.config.h
++
+ Microprofile has lots of predefined macros that can be changed. To modify this, make sure `MICROPROFILE_USE_CONFIG` is defined, and put the changed defines in `microprofile.config.h`. 
+ 
+-# Known Issues & Limitations
++## Known Issues & Limitations
++
+ There are a few minor known issues & Limitations:
+ 
+ * Currently the relative placement of gpu timings vs the cpu timings tend to slide a bit, and thus the relative position of GPU timestamps and CPU timestamp are not correct.
+@@ -193,11 +195,14 @@ There are a few minor known issues & Lim
+ * If you're dynamically creating threads, you must call `MicroProfileOnThreadExit` when threads exit, to reuse the thread log objects
+ * instrumentation is only supported on x86-64
+ 
+-# Console support
++## Console support
++
+ Microprofile supports the two major consoles - Search for 'microprofile' in the closed platform forums.
+ 
+-# Changes
+-## V4
++## Changes
++
++### V4
++
+ * Timeline view is now drawn using a hierarchical algorithm that scales better
+ * Search in timeline view has been improved
+ 	* you can now search for substrings interactively
+@@ -210,6 +215,6 @@ Microprofile supports the two major cons
+ * Fixed thread hide mode to be collapsed(which is what it should've been). Added a shortcut key to toggle it ('c')
+ * Switched build to use github actions
+ 
++## License
+ 
+-# License
+ Licensed using [UNLICENSE](LICENSE)

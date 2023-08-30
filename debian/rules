@@ -1,4 +1,33 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all optimize=-lto qa=+all
+export DEB_CPPFLAGS_MAINT_APPEND = -DMICROPROFILE_API='__attribute__ ((visibility ("default")))'
+
 %:
-	dh $@
+	dh $@ --buildsystem=meson
+
+# create microprofile_html.h
+execute_before_dh_auto_configure:
+	$(MAKE) -C src
+
+override_dh_auto_configure:
+	dh_auto_configure -- -Db_lto=true
+
+# Convert Markdown to HTML, and use CSS' color-scheme property together with
+# highlight.js to highlight code blocks.
+ifeq (,$(filter nodoc,$(DEB_BUILD_OPTIONS)))
+execute_after_dh_auto_build:
+	echo '<meta name="color-scheme" content="light dark">' > README.html
+	echo '<link rel="stylesheet" href="/usr/share/javascript/highlight.js/styles/default.css" media="(prefers-color-scheme: light)">' >> README.html
+	echo '<link rel="stylesheet" href="/usr/share/javascript/highlight.js/styles/dark.css" media="(prefers-color-scheme: dark)">' >> README.html
+	echo '<script src="/usr/share/javascript/highlight.js/highlight.min.js"></script>' >> README.html
+	echo '<script>hljs.initHighlightingOnLoad();</script>' >> README.html
+	cmark README.md >> README.html
+endif
+
+override_dh_installexamples:
+	dh_installexamples -X.vcxproj -X.sln -X.bat
+
+execute_after_dh_auto_clean:
+	$(MAKE) -C src clean
+	$(RM) README.html

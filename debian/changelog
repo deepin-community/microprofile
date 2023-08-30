@@ -1,5 +1,53 @@
-template-repository (1.0-1) unstable; urgency=medium
+microprofile (4.0+dfsg-3) unstable; urgency=medium
 
-  * Initial release
+  * d/rules: convert README to HTML.
+    HTML documentation is more in line with section 12.4 of the Debian
+    Policy. The generated HTML document uses highlight.js to highlight code
+    blocks and CSS' color-scheme property to adapt to the user's color
+    scheme preference.
+  * d/rules: exclude Visual Studio files from the examples
+  * d/patches: simplify visibility patch
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Andrea Pappacoda <andrea@pappacoda.it>  Wed, 28 Dec 2022 16:44:55 +0100
+
+microprofile (4.0+dfsg-2) unstable; urgency=medium
+
+  * Upload to unstable
+  * d/patches: fix blhc Salsa job
+
+ -- Andrea Pappacoda <andrea@pappacoda.it>  Sun, 06 Nov 2022 22:07:50 +0100
+
+microprofile (4.0+dfsg-1) experimental; urgency=medium
+
+  [ Andrea Pappacoda ]
+  * New upstream version 4.0+dfsg
+  * d/control: libmicroprofile3 -> libmicroprofile4
+  * d/copyright: exclude non-free JavaScript code
+  * d/copyright: also mention the Unlicense license.
+    Upstream originally used the Unlicense, but later relicensed under the
+    MIT license. Between the 3.1 and 4.0 releases, though, a third party
+    contributor submitted a patch adding a new LICENSE file including the
+    Unlicense, and the patch was merged. It is now unclear which portions
+    are licensed under the MIT and which ones under the Unlicense (if any),
+    so I've marked all the code as licensed under both. It shouldn't matter
+    anyway, as the Unlicense is a public domain-equivalent license.
+  * d/patches: drop and refresh patches
+  * d/patches: replace non-free JavaScript code (Closes: #1023178)
+
+  [ Debian Janitor ]
+  * Set upstream metadata fields: Bug-Submit.
+
+ -- Andrea Pappacoda <andrea@pappacoda.it>  Thu, 03 Nov 2022 21:54:56 +0100
+
+microprofile (3.1+ds-2) unstable; urgency=medium
+
+  * d/patches: link with libatomic when needed
+  * d/tests: add autopkgtests
+
+ -- Andrea Pappacoda <andrea@pappacoda.it>  Sat, 19 Feb 2022 13:53:56 +0100
+
+microprofile (3.1+ds-1) unstable; urgency=low
+
+  * Initial release. Closes: #1001319
+
+ -- Andrea Pappacoda <andrea@pappacoda.it>  Wed, 08 Dec 2021 13:40:15 +0100
